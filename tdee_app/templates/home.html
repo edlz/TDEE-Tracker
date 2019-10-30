@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
 <a href="{{ url_for('new') }}" class="btn btn-outline-info col-md-12 mr-auto">{{ text }}</a>
+{% for data in datas %}
 <article class="media content-section">
-  <div class="media-body">
-    <div class="article-metadata">
-      <a class="mr-2" href="#">{{ data.user_id }}</a>
-      <small class="text-muted">{{ data.calories }}</small>
-    </div>
+  <div class="media-body row">
     <h2><a class="article-title" href="#">{{ data.date }}</a></h2>
-    <p class="article-content">{{ data.weight }}</p>
+    <h4 class="mr-2">{{ data.user_id.username }}</h4>
+    <h4 class="mr-2">{{ data.calories }} Calories</h4>
+    <h4 class="mr-2">{{ data.weight }} LB</h4>
   </div>
 </article>
-
+{% endfor %}
 {% endblock content %}

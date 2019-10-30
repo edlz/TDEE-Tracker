@@ -5,7 +5,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #111111;
+    color: #3f6347;
 }
 
 .bg-color {
@@ -13,11 +13,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header .navbar-nav .nav-link {
-    color: #000000;
+    color: #ffffff;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-    color: #000000;
+    color: #ffffff;
 }
 
 .site-header .navbar-nav .nav-link.active {

@@ -9,12 +9,12 @@ from datetime import datetime
 @app.route('/home')
 @login_required
 def home():
-    data = DailyStats.query.first()
-    if DailyStats.query.filter_by(date=datetime.today().date()).first():
+    data = DailyStats.query.filter_by(user_id=current_user.id).all()
+    if DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first():
         add_text = 'Update Data'
     else:
         add_text = 'Add Data'
-    return render_template('home.html', data=data, text=add_text)
+    return render_template('home.html', datas=data, text=add_text)
 
 @app.route('/about')
 def about():
@@ -90,9 +90,9 @@ def new():
     form = NewData()
     if form.validate_on_submit():
         stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user)
-        if not DailyStats.query.filter_by(date=datetime.today().date()).first():
-            remove_stats = DailyStats.query.filter_by(date=datetime.today().date()).first()
-            db.session.remove(remove_stats)
+        if DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first():
+            remove_stats = DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first()
+            db.session.delete(remove_stats)
             flash('Data Updated', 'success')
         else:
             flash('Data Added', 'success')
@@ -101,8 +101,8 @@ def new():
         db.session.commit()
         return redirect(url_for('home'))
     elif request.method == 'GET':
-        if DailyStats.query.filter_by(date=datetime.today().date()).first():
-            form.calories.data = DailyStats.query.filter_by(date=datetime.today().date()).first().calories
-            form.weight.data = DailyStats.query.filter_by(date=datetime.today().date()).first().weight
+        if DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first():
+            form.calories.data = DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first().calories
+            form.weight.data = DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first().weight
             return render_template('new.html', title='New', form=form, text='Update')
     return render_template('new.html', title='New', form=form, text='Add')
