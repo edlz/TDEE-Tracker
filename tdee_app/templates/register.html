@@ -19,8 +19,22 @@
                 {% else %}
                 {{ form.username(class="form-control form-control-lg") }}
                 {% endif %}
-
             </div>
+            <div class="form-group">
+                    {{ form.start_weight.label(class="form-control-label") }}
+    
+                    {% if form.start_weight.errors %}
+                    {{ form.start_weight(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.start_weight.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.start_weight(class="form-control form-control-lg") }}
+                    {% endif %}
+    
+                </div>
             <div class="form-group">
                 {{ form.password.label(class="form-control-label") }}
                 {% if form.password.errors %}

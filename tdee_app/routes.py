@@ -1,13 +1,20 @@
 from tdee_app.models import User, DailyStats
 from tdee_app import app, db, bcrypt
-from tdee_app.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from tdee_app.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewData
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
+from datetime import datetime
 
 @app.route('/')
 @app.route('/home')
+@login_required
 def home():
-    return render_template('home.html')
+    data = DailyStats.query.first()
+    if DailyStats.query.filter_by(date=datetime.today().date()).first():
+        add_text = 'Update Data'
+    else:
+        add_text = 'Add Data'
+    return render_template('home.html', data=data, text=add_text)
 
 @app.route('/about')
 def about():
@@ -20,7 +27,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, password=hashed_password)
+        user = User(username=form.username.data, password=hashed_password, start_weight=form.start_weight.data)
         db.session.add(user)
         db.session.commit()
         flash(f'Account Created For {form.username.data}.', category='success')
@@ -64,14 +71,38 @@ def profile():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
-   #     current_user.stats.start_date = form.start_date.data
-   #     if current_user.stats.start_weight:
-   #         current_user.stats.start_weight = form.start_weight.data
-   #     db.session.commit()
+        current_user.start_date = form.start_date.data
+        current_user.start_weight = form.start_weight.data
+        db.session.commit()
         flash('Account Updated.', 'success')
-        return redirect(url_for('account'))
+        return redirect(url_for('profile'))
     elif request.method == 'GET':
-   #     form.username.data = current_user.username
-   #     form.start_weight.data = current_user.stats.start_weight
-        pass
+        form.username.data = current_user.username
+        form.start_date.data = current_user.start_date
+        form.start_weight.data = current_user.start_weight
+        
     return render_template('profile.html', title='Profile', form=form)
+
+
+@app.route('/new', methods=["GET", "POST"])
+@login_required
+def new():
+    form = NewData()
+    if form.validate_on_submit():
+        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user)
+        if not DailyStats.query.filter_by(date=datetime.today().date()).first():
+            remove_stats = DailyStats.query.filter_by(date=datetime.today().date()).first()
+            db.session.remove(remove_stats)
+            flash('Data Updated', 'success')
+        else:
+            flash('Data Added', 'success')
+
+        db.session.add(stats)
+        db.session.commit()
+        return redirect(url_for('home'))
+    elif request.method == 'GET':
+        if DailyStats.query.filter_by(date=datetime.today().date()).first():
+            form.calories.data = DailyStats.query.filter_by(date=datetime.today().date()).first().calories
+            form.weight.data = DailyStats.query.filter_by(date=datetime.today().date()).first().weight
+            return render_template('new.html', title='New', form=form, text='Update')
+    return render_template('new.html', title='New', form=form, text='Add')

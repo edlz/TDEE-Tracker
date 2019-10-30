@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
+<a href="{{ url_for('new') }}" class="btn btn-outline-info col-md-12 mr-auto">{{ text }}</a>
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">hello</a>
-      <small class="text-muted">hellohello</small>
+      <a class="mr-2" href="#">{{ data.user_id }}</a>
+      <small class="text-muted">{{ data.calories }}</small>
     </div>
-    <h2><a class="article-title" href="#">hello</a></h2>hello
-    <p class="article-content">hellohellohellohellohellohellohellohellohello</p>
+    <h2><a class="article-title" href="#">{{ data.date }}</a></h2>
+    <p class="article-content">{{ data.weight }}</p>
   </div>
 </article>
 

@@ -1,14 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="content-section">
-    <div class="media-body">
-        <h1 class="account-heading">{{ current_user.username}}</h1>
-    </div>
     <div class="col"></div>
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom text-center">Starting Stats</legend>
+            <legend class="border-bottom text-center">{{ current_user.username}}'s Starting Stats</legend>
+            <div class="form-group">
+                {{ form.username.label(class="form-control-label") }}
+                {% if form.username.errors %}
+                {{ form.username(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.username.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.username(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
             <div class="form-group">
                 {{ form.start_date.label(class='form-control-label datepicker') }}
                 {% if form.start_date.errors %}
@@ -41,6 +51,5 @@
         </div>
     </form>
     <div class="col"></div>
-
 </div>
 {% endblock content %}

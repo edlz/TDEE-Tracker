@@ -5,7 +5,7 @@
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom text-center">Sign In</legend>
+            <legend class="border-bottom text-center">Log In</legend>
             <div class="form-group">
                 {{ form.username.label(class="form-control-label") }}
 
@@ -44,6 +44,5 @@
             <a class="btn btn-outline-info col-md-12 mr-auto" href="{{ url_for('register') }}">Need An Account?</a>
         </div>
     </form>
-    <div class="col"></div>
 </div>
 {% endblock content %}

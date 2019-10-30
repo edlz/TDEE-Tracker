@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -36,15 +33,11 @@
             {% else %}
             {% endif %}
           </div>
-          <!-- Navbar Right Side -->
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
             {% if current_user.is_authenticated %}
             <a class="nav-item nav-link" href="{{ url_for('profile') }}">Profile</a>
             <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-            <a class="nav-item nav-link" href="{{ url_for('login') }}">Login(remove later)</a>
-            <a class="nav-item nav-link" href="{{ url_for('register') }}">Register(remove later)</a>
             {% endif %}
           </div>
         </div>
@@ -68,8 +61,7 @@
       </div>
   </main>
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
