@@ -12,17 +12,26 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(20), nullable=False)
     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     stats = db.relationship('Stats', backref='username', lazy=True)
+    daily_stats = db.relationship('DailyStats', backref='username', lazy=True)
 
     def __repr__(self):
         return f'User("{self.username}","{self.password}")'
 
 class Stats(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    calories = db.Column(db.Integer())
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     start_weight = db.Column(db.Integer, nullable=False)
     current_weight = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f'Stats("{self.user_id}","{self.date}")'
+
+class DailyStats(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    calories = db.Column(db.Integer())
+    weight = db.Column(db.Integer())
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f'DailyStats("{self.calories}","{self.date}")'
