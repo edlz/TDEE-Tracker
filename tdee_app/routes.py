@@ -1,4 +1,4 @@
-from tdee_app.models import User, Stats
+from tdee_app.models import User, DailyStats
 from tdee_app import app, db, bcrypt
 from tdee_app.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from flask import render_template, url_for, flash, redirect, request
@@ -23,7 +23,7 @@ def register():
         user = User(username=form.username.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash(f'Account Created For {form.username.data}. Please Login.', category='success')
+        flash(f'Account Created For {form.username.data}.', category='success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -64,12 +64,14 @@ def profile():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
-        current_user.Stats.start_date = form.start_date.data
-        current_user.Stats.start_weight = form.start_weight.data
-        db.session.commit()
+   #     current_user.stats.start_date = form.start_date.data
+   #     if current_user.stats.start_weight:
+   #         current_user.stats.start_weight = form.start_weight.data
+   #     db.session.commit()
         flash('Account Updated.', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
-        form.username.data = current_user.username
-        start_weight = current_user.start_weight
+   #     form.username.data = current_user.username
+   #     form.start_weight.data = current_user.stats.start_weight
+        pass
     return render_template('profile.html', title='Profile', form=form)

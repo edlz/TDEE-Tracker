@@ -22,10 +22,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=15)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=3, max=20)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    start_date = DateField('DatePicker', format='%Y-%m-%d')
+    start_date = DateField('Starting Date', format='%Y-%m-%d')
     start_weight = IntegerField('Starting Weight')
     submit = SubmitField('Update Account')
 
