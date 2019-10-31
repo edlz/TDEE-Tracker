@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(15), unique=True, nullable=False)
     password = db.Column(db.String(20), nullable=False)
     start_date = db.Column(db.Date, nullable=False, default=datetime.today().date())
-    start_weight = db.Column(db.Integer, nullable=False, default=0)
+    start_weight = db.Column(db.Float, nullable=False, default=0)
 
     daily_stats = db.relationship('DailyStats', backref='name', lazy=True)
 
@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
 class DailyStats(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     calories = db.Column(db.Integer())
-    weight = db.Column(db.Integer())
+    weight = db.Column(db.Float())
     date = db.Column(db.Date, nullable=False, default=datetime.today().date())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<a href="{{ url_for('new') }}" class="btn btn-outline-info col-md-12 mr-auto">{{ text }}</a>
+<a href="{{ url_for('data.new') }}" class="btn btn-outline-info col-md-12 mr-auto">{{ text }}</a>
 {% for data in datas %}
 <article class="media content-section">
   <div class="media-body row">
