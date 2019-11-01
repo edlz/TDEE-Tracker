@@ -1,10 +1,13 @@
 from tdee_app import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+import graphene
+from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,4 +29,42 @@ class DailyStats(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f'DailyStats("{self.calories}","{self.date}")'
+        return f'DailyStats("{self.calories}", "{self.weight}, "{self.date}")'
+
+
+
+
+class UserObject(SQLAlchemyObjectType):
+   class Meta:
+       model = User
+       interfaces = (graphene.relay.Node, )
+
+class DailyStatsObject(SQLAlchemyObjectType):
+    class Meta:
+        model = DailyStats
+        interfaces = (graphene.relay.Node, )
+
+class Query(graphene.ObjectType):
+    node = graphene.relay.Node.Field()
+    all_stats = SQLAlchemyConnectionField(DailyStatsObject)
+    all_users = SQLAlchemyConnectionField(UserObject)
+    
+schema = graphene.Schema(query=Query)
+
+class InsertStats(graphene.Mutation):
+    class Arguments:
+        calories = graphene.Int(required=True)
+        weight = graphene.Float(required=True) 
+        username = graphene.String(required=True)
+    data = graphene.Field(lambda: DailyStatsObject)
+    def mutate(self, info, calories, weight, username):
+        user = User.query.filter_by(username=username).first()
+        stats = DailyStats(calories=calories, weight=weight)
+        if user is not None:
+            DailyStats.name = user
+        db.session.add(stats)
+        db.session.commit()
+        return InsertStats(stats=stats)
+class Mutation(graphene.ObjectType):
+    insert_stats = InsertStats.Field()
+schema = graphene.Schema(query=Query, mutation=Mutation)

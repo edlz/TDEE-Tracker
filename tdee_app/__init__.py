@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from tdee_app.config import Config
+from flask_graphql import GraphQLView
+
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -10,6 +12,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
+from tdee_app.models import schema
 
 def create_app(config_class=Config):
     app = Flask(__name__)

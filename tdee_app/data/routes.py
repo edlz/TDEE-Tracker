@@ -5,6 +5,8 @@ from tdee_app.data.forms import NewData
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import current_user, login_required
 from datetime import datetime
+from flask_graphql import GraphQLView
+from tdee_app.models import schema
 
 data = Blueprint('data', __name__)
 
@@ -48,3 +50,12 @@ def new():
                 .first().weight
             return render_template('new.html', title='New', form=form, text='Update')
     return render_template('new.html', title='New', form=form, text='Add')
+
+data.add_url_rule(
+    '/graphql',
+    view_func=GraphQLView.as_view(
+        'graphql',
+        schema=schema,
+        graphiql=True # for having the GraphiQL interface
+    )
+)
