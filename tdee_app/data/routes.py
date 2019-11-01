@@ -29,7 +29,7 @@ def stats():
 def new():
     form = NewData()
     if form.validate_on_submit():
-        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user)
+        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, days=(datetime.today().date()-current_user.start_date).days)
         if DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first():
             remove_stats = DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first()
             db.session.delete(remove_stats)

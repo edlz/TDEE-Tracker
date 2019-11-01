@@ -27,12 +27,10 @@ class DailyStats(db.Model):
     weight = db.Column(db.Float())
     date = db.Column(db.Date, nullable=False, default=datetime.today().date())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
+    days = db.Column(db.Integer(), nullable=False, default=0)
+    
     def __repr__(self):
-        return f'DailyStats("{self.calories}", "{self.weight}, "{self.date}")'
-
-
-
+        return f'DailyStats("{self.calories}", "{self.weight}, "{self.days}", {self.date}")'
 
 class UserObject(SQLAlchemyObjectType):
    class Meta:
@@ -55,11 +53,12 @@ class InsertStats(graphene.Mutation):
     class Arguments:
         calories = graphene.Int(required=True)
         weight = graphene.Float(required=True) 
+        days = graphene.Int(required=True)
         username = graphene.String(required=True)
     data = graphene.Field(lambda: DailyStatsObject)
     def mutate(self, info, calories, weight, username):
         user = User.query.filter_by(username=username).first()
-        stats = DailyStats(calories=calories, weight=weight)
+        stats = DailyStats(calories=calories, weight=weight, days=days)
         if user is not None:
             DailyStats.name = user
         db.session.add(stats)
