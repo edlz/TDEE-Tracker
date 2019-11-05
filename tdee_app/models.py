@@ -64,6 +64,8 @@ class InsertStats(graphene.Mutation):
         db.session.add(stats)
         db.session.commit()
         return InsertStats(stats=stats)
+
 class Mutation(graphene.ObjectType):
     insert_stats = InsertStats.Field()
+    
 schema = graphene.Schema(query=Query, mutation=Mutation)
