@@ -61,6 +61,7 @@ def add_data():
         # date_conver = datetime.strptime(form.date.data, '%Y-%m-%d')
         stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, date=form.date.data, days=(form.date.data-current_user.start_date).days)
         # removes the previous stats for day if data for day already exists
+        # patched out
         if DailyStats.query.filter_by(date=form.date.data, user_id=current_user.id).first():
             remove_stats = DailyStats.query.filter_by(date = form.date.data, user_id=current_user.id).first()
             db.session.delete(remove_stats)

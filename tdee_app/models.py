@@ -1,7 +1,10 @@
 from tdee_app import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+# graphql
 import graphene
+from graphene.types import Scalar
+from graphql.language import ast
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 
 @login_manager.user_loader
@@ -41,7 +44,7 @@ class DailyStatsObject(SQLAlchemyObjectType):
     class Meta:
         model = DailyStats
         interfaces = (graphene.relay.Node, )
-
+# GRAPHQL stuff
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
     all_stats = SQLAlchemyConnectionField(DailyStatsObject)
@@ -49,16 +52,29 @@ class Query(graphene.ObjectType):
     
 schema = graphene.Schema(query=Query)
 
+class Date(Scalar):
+    @staticmethod
+    def serialize(dt):
+        return dt.isoformat()
+    @staticmethod
+    def parse_literal(node):
+        if isinstance(node, ast.StringValue):
+            return datetime.strptime(node.value, "%Y-%m-%d")
+    @staticmethod
+    def parse_value(value):
+        return datetime.strptime(value, "%Y-%m-%d")
+
+
 class InsertStats(graphene.Mutation):
     class Arguments:
         calories = graphene.Int(required=True)
         weight = graphene.Float(required=True) 
-        days = graphene.Int(required=True)
+        date = Date(required=True)
         username = graphene.String(required=True)
     data = graphene.Field(lambda: DailyStatsObject)
-    def mutate(self, info, calories, weight, username):
+    def mutate(self, info, calories, weight, username, date):
         user = User.query.filter_by(username=username).first()
-        stats = DailyStats(calories=calories, weight=weight, days=days)
+        stats = DailyStats(calories=calories, weight=weight, date=date)
         if user is not None:
             DailyStats.name = user
         db.session.add(stats)

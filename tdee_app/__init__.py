@@ -20,7 +20,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
-
+  #### create new database
   #  with app.app_context():
   #      db.create_all()
 

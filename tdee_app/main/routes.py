@@ -2,6 +2,7 @@ from flask import render_template, Blueprint
 from tdee_app.models import DailyStats
 from flask_login import login_required, current_user
 from datetime import datetime
+from tdee_app.calc import calc_tdee
 
 main = Blueprint('main', __name__)
 
@@ -16,7 +17,7 @@ def home():
         add_text = "Update Today's Data"
     else:
         add_text = 'Add Data'
-    return render_template('home.html', datas=data, text=add_text)
+    return render_template('home.html', datas=data, calc=calc_tdee, text=add_text, calc_month=calc_tdee.this_day_month_tdee, calc_week=calc_tdee.this_day_week_tdee)
 
 @main.route('/about')
 def about():
