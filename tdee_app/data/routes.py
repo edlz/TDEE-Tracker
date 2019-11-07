@@ -58,11 +58,11 @@ def new():
 def add_data():
     form = AddData()
     if form.validate_on_submit():
-        date_conver = datetime.strptime(form.date.data, '%Y-%m-%d')
-        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, date=form.date.data, days=(date_conver.date()-current_user.start_date).days)
+        # date_conver = datetime.strptime(form.date.data, '%Y-%m-%d')
+        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, date=form.date.data, days=(form.date.data-current_user.start_date).days)
         # removes the previous stats for day if data for day already exists
         if DailyStats.query.filter_by(date=form.date.data, user_id=current_user.id).first():
-            remove_stats = DailyStats.query.filter_by(days = form.day.data, user_id=current_user.id).first()
+            remove_stats = DailyStats.query.filter_by(date = form.date.data, user_id=current_user.id).first()
             db.session.delete(remove_stats)
             flash('Data Updated', 'success')
         else:
@@ -70,8 +70,7 @@ def add_data():
         db.session.add(stats)
         db.session.commit()
         return redirect(url_for('main.home'))
-    elif request.method == 'GET':
-        form.date.data = 'm-d-y'
+  
     return render_template('add.html', title='Add Data', form=form, text='Add')
 
 
