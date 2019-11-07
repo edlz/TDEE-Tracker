@@ -2,9 +2,77 @@ from flask import render_template, Blueprint
 from tdee_app.models import DailyStats
 from flask_login import login_required, current_user
 from datetime import datetime
-from tdee_app.calc import calc_tdee
+# from tdee_app.calc import calc_tdee
+from collections import namedtuple
+
 
 main = Blueprint('main', __name__)
+##########################################################################################################################
+cal_conver = 3500
+Data =  namedtuple('Data', ['calories', 'weight'])
+
+def list_past_week(day):
+    ' takes in day and returns list of data for past 7 days if applicable'
+    d = Data([],[])
+   
+    if day - 6 >= 0:
+        for i in range(day - 6, day + 1):
+            stats = DailyStats.query.filter_by(days=i, user_id=current_user.id).first()
+            if stats:
+                d.calories.append(stats.calories)
+                d.weight.append(stats.weight)
+    else:
+        for i in range(day + 1):
+            stats = DailyStats.query.filter_by(days=i, user_id=current_user.id).first()
+            if stats:
+                d.calories.append(stats.calories)
+                d.weight.append(stats.weight)
+    return d
+
+def list_past_month(day):
+    d = Data([],[])
+    if day - 30 >= 0:
+        for i in range(day - 30, day + 1):
+            stats = DailyStats.query.filter_by(days=i, user_id=current_user.id).first()
+            if stats:
+                d.calories.append(stats.calories)
+                d.weight.append(stats.weight)
+    else:
+        for i in range(day):
+            stats = DailyStats.query.filter_by(days=i, user_id=current_user.id).first()
+            if stats:
+                d.calories.append(stats.calories)
+                d.weight.append(stats.weight)
+    return d
+
+def tdee_week(d):
+    ' returns weekly tdee given calories and weight throughout a week '
+    if len(d.weight) > 1:
+        delta = d.weight[-1] - d.weight[0]
+    else:
+        delta = 0
+        return 100
+    tdee = (sum(d.calories)/len(d.calories)) - ((delta * 500 * len(d.calories)) / len(d.calories))
+    return round(tdee)
+
+def tdee_month(d):
+    if len(d.weight) > 1:
+        delta = d.weight[-1] - d.weight[0]
+    else:
+        delta = 0
+        return 100
+    tdee = (sum(d.calories)/len(d.calories)) - ((delta * cal_conver) / len(d.weight))
+    return round(tdee)
+
+def this_day_week_tdee(day):
+    d = list_past_week(day)
+    return str(tdee_week(d))
+
+def this_day_month_tdee(day):
+    d = list_past_week(day)
+    return str(tdee_month(d))
+
+#################################################################################################
 
 @main.route('/')
 @main.route('/home')
@@ -17,7 +85,7 @@ def home():
         add_text = "Update Today's Data"
     else:
         add_text = 'Add Data'
-    return render_template('home.html', datas=data, calc=calc_tdee, text=add_text, calc_month=calc_tdee.this_day_month_tdee, calc_week=calc_tdee.this_day_week_tdee)
+    return render_template('home.html', datas=data, text=add_text, calc_month=this_day_month_tdee, calc_week=this_day_week_tdee)
 
 @main.route('/about')
 def about():

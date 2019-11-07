@@ -15,13 +15,13 @@
       <h5 class="cr-2">{{ data.calories }} Calories</h5>
       <h5 class="cr-2">{{ data.weight }} LB</h5>
       <div class=row>
-      <form action="{{ url_for('data.delete_data', data_id=data.id)}}" method="POST">
-        <input type="submit" class="btn btn-info btn-sm m-1" value="Update"></input>
-      </form>
-      <form action="{{ url_for('data.delete_data', data_id=data.id)}}" method="POST"></form>
-      <input type="submit" class="btn btn-danger btn-sm m-1" value="Delete"></input>
-      </form>
-    </div>
+        <form action="{{ url_for('data.delete_data', data_id=data.id)}}" method="POST">
+          <input type="submit" class="btn btn-info btn-sm m-1" value="Update"></input>
+        </form>
+        <form action="{{ url_for('data.delete_data', data_id=data.id)}}" method="POST">
+        <input type="submit" class="btn btn-danger btn-sm m-1" value="Delete"></input>
+        </form>
+      </div>
     </div>
     <div class="media-body">
       <h6 class="mr-2 cr-2">Weekly TDEE: </h6>

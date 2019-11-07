@@ -10,7 +10,7 @@ class NewData(FlaskForm):
     submit = SubmitField('Submit Data')
 
 class AddData(FlaskForm):
-    date = DateField('Date: m-d-y', format='%m-%d-%Y', validators=[DataRequired()])
+    date = DateField('Date: y-m-d', format='%Y-%m-%d', validators=[DataRequired()])
     calories = IntegerField('Calories Eaten', validators=[NumberRange(min=1000)])
     weight = DecimalField('Weight in LB', places=1, validators=[NumberRange(min=100, max=500)])
     submit = SubmitField('Submit Data')

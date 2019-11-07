@@ -1,21 +1,19 @@
-from flask import Blueprint
-from tdee_app.models import DailyStats
+from flask import Blueprint, render_template, url_for, flash, redirect, request
+from tdee_app.models import DailyStats, schema
 from tdee_app import db
 from tdee_app.data.forms import NewData, AddData
-from flask import render_template, url_for, flash, redirect, request
 from flask_login import current_user, login_required
-from datetime import datetime
 from flask_graphql import GraphQLView
-from tdee_app.models import schema
+from datetime import datetime
 
 data = Blueprint('data', __name__)
-
 
 @data.route('/graphs', methods=["GET", "POST"])
 @login_required
 def graphs():
-    return render_template('graphs.html', title='Graphs')
-
+    bar_labels=labels
+    bar_values=values
+    return render_template('graphs.html', title='Graphs', max=17000, labels=bar_labels, values=bar_values)
 
 @data.route('/stats', methods=["GET", "POST"])
 @login_required
@@ -85,6 +83,7 @@ def delete_data(data_id):
     flash(f'Data for date {data.date} deleted.', 'danger')
     return redirect(url_for('main.home'))
 
+    
     
 # graphql
 data.add_url_rule(
