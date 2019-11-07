@@ -25,7 +25,11 @@
     </div>
     <div class="media-body">
       <h6 class="mr-2 cr-2">Weekly TDEE: </h6>
+      {% if data.days > 7 %}
       <h3 class="cr-2 mr-2 border border-warning">{{ calc_week(data.days) }}</h3>
+      {% else %}
+      <h6 class="cr-2 mr-2 border border-warning">Data Pending</h6>
+      {% endif %}
       <h6 class="mr-2 cr-2">Monthly TDEE: </h6>
       <h3 class="cr-2 mr-2  border border-info">{{ calc_month(data.days) }}</h3>
 

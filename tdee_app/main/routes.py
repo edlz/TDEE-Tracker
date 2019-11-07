@@ -44,32 +44,37 @@ def list_past_month(day):
                 d.calories.append(stats.calories)
                 d.weight.append(stats.weight)
     return d
+def get_average_weight_last_week(day):
+    d = []
+    for i in range(day):
+        stats = DailyStats.query.filter_by(days=i-7, user_id=current_user.id).first()
+        if stats:
+            d.append(stats.weight)
+    return sum(d)/len(d)
 
-def tdee_week(d):
+def tdee_week(d, day):
     ' returns weekly tdee given calories and weight throughout a week '
     if len(d.weight) > 1:
-        delta = d.weight[-1] - d.weight[0]
+        delta =  get_average_weight_last_week(day) - (sum(d.weight)/len(d.weight))
     else:
-        delta = 0
-        return 100
-    tdee = (sum(d.calories)/len(d.calories)) - ((delta * 500 * len(d.calories)) / len(d.calories))
+        return 0
+    tdee = (sum(d.calories)/len(d.calories)) - ((delta * 500 * (day % 7) / len(d.calories)))
     return round(tdee)
 
 def tdee_month(d):
     if len(d.weight) > 1:
         delta = d.weight[-1] - d.weight[0]
     else:
-        delta = 0
-        return 100
+        return 0
     tdee = (sum(d.calories)/len(d.calories)) - ((delta * cal_conver) / len(d.weight))
     return round(tdee)
 
 def this_day_week_tdee(day):
     d = list_past_week(day)
-    return str(tdee_week(d))
+    return str(tdee_week(d, day))
 
 def this_day_month_tdee(day):
-    d = list_past_week(day)
+    d = list_past_month(day)
     return str(tdee_month(d))
 
 #################################################################################################
