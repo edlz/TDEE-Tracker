@@ -13,7 +13,7 @@ def home():
         .filter_by(user_id=current_user.id)\
         .order_by(DailyStats.date.desc()).all()
     if DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first():
-        add_text = 'Update Todays Data'
+        add_text = "Update Today's Data"
     else:
         add_text = 'Add Data'
     return render_template('home.html', datas=data, text=add_text)

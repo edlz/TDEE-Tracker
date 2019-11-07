@@ -73,8 +73,18 @@ def add_data():
   
     return render_template('add.html', title='Add Data', form=form, text='Add')
 
+@data.route('/<int:data_id>/delete', methods=['POST'])
+@login_required
+def delete_data(data_id):
+    data = DailyStats.query.get_or_404(data_id)
+    if data.name != current_user:
+        abort(403)
+    db.session.delete(data)
+    db.session.commit()
+    flash(f'Data for date {data.date} deleted.', 'danger')
+    return redirect(url_for('main.home'))
 
-
+    
 # graphql
 data.add_url_rule(
     '/graphql',
