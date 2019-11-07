@@ -1,5 +1,5 @@
-
-from models import DailyStats
+# cannot import models
+from tdee_app.models import DailyStats
 from flask_login import current_user
 from collections import namedtuple
 
