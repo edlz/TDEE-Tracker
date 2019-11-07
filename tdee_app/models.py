@@ -25,7 +25,7 @@ class DailyStats(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     calories = db.Column(db.Integer())
     weight = db.Column(db.Float())
-    date = db.Column(db.Date, nullable=False, default=datetime.today().date())
+    date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     days = db.Column(db.Integer(), nullable=False, default=0)
     

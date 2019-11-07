@@ -1,7 +1,7 @@
 from flask import Blueprint
 from tdee_app.models import DailyStats
 from tdee_app import db
-from tdee_app.data.forms import NewData
+from tdee_app.data.forms import NewData, AddData
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import current_user, login_required
 from datetime import datetime
@@ -23,13 +23,14 @@ def stats():
     return render_template('stats.html', title='Stats')
 
 
-
+# add data to current date
 @data.route('/new', methods=["GET", "POST"])
 @login_required
 def new():
     form = NewData()
     if form.validate_on_submit():
-        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, days=(datetime.today().date()-current_user.start_date).days)
+        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, date=datetime.today().date(), days=(datetime.today().date()-current_user.start_date).days)
+        # check if data already exists for current day
         if DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first():
             remove_stats = DailyStats.query.filter_by(date=datetime.today().date(), user_id=current_user.id).first()
             db.session.delete(remove_stats)
@@ -51,6 +52,31 @@ def new():
             return render_template('new.html', title='New', form=form, text='Update')
     return render_template('new.html', title='New', form=form, text='Add')
 
+# add data to past days
+@data.route('/add', methods=["GET", "POST"])
+@login_required
+def add_data():
+    form = AddData()
+    if form.validate_on_submit():
+        date_conver = datetime.strptime(form.date.data, '%Y-%m-%d')
+        stats = DailyStats(calories=form.calories.data, weight=form.weight.data, name=current_user, date=form.date.data, days=(date_conver.date()-current_user.start_date).days)
+        # removes the previous stats for day if data for day already exists
+        if DailyStats.query.filter_by(date=form.date.data, user_id=current_user.id).first():
+            remove_stats = DailyStats.query.filter_by(days = form.day.data, user_id=current_user.id).first()
+            db.session.delete(remove_stats)
+            flash('Data Updated', 'success')
+        else:
+            flash(f'Data Added for day {stats.days}, ', 'success')
+        db.session.add(stats)
+        db.session.commit()
+        return redirect(url_for('main.home'))
+    elif request.method == 'GET':
+        form.date.data = 'm-d-y'
+    return render_template('add.html', title='Add Data', form=form, text='Add')
+
+
+
+# graphql
 data.add_url_rule(
     '/graphql',
     view_func=GraphQLView.as_view(
@@ -59,3 +85,4 @@ data.add_url_rule(
         graphiql=True # for having the GraphiQL interface
     )
 )
+

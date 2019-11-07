@@ -1,13 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
 <a href="{{ url_for('data.new') }}" class="btn btn-outline-info col-md-12 mr-auto">{{ text }}</a>
+
+<a href="{{ url_for('data.add_data') }}" class="btn btn-outline-info col-md-12 mr-auto">Add Data for Date</a>
 {% for data in datas %}
 <article class="media content-section">
+  <div class="media-body col">
+    <h4><a class="article-title" href="#">{{ data.date }}</a></h4>
+    <h4 class="cr-2">{{ data.days }} days since start</h4>
+    <h4 class="cr-2">{{ data.user_id.username }}</h4>
+    <h4 class="cr-2">{{ data.calories }} Calories</h4>
+    <h4 class="cr-2">{{ data.weight }} LB</h4>
+    <button type="button" class="btn btn-info btn-sm m-1">Update</button>
+    <button type="button" class="btn btn-danger btn-sm m-1">Delete</button>
+  </div>
   <div class="media-body row">
-    <h2><a class="article-title" href="#">{{ data.date }}</a></h2>
-    <h4 class="mr-2">{{ data.user_id.username }}</h4>
-    <h4 class="mr-2">{{ data.calories }} Calories</h4>
-    <h4 class="mr-2">{{ data.weight }} LB</h4>
+    <h4 class= mr-2>Weekly TDEE: </h4>
+    <h4 class= mr-2>Monthly TDEE: </h4>
   </div>
 </article>
 {% endfor %}
