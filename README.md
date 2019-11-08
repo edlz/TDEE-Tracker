@@ -1,4 +1,4 @@
-# TDEE-project
+# TDEE Tracker/Calculator Application
 Web app to help calculate TDEE(total daily energy expenditure)
 
 - python
