@@ -76,15 +76,33 @@ def this_day_week_tdee(day):
 def this_day_month_tdee(day):
     d = list_past_month(day)
     return str(tdee_month(d))
+##################################################################################################################
+labels = [
+    'JAN', 'FEB', 'MAR', 'APR',
+    'MAY', 'JUN', 'JUL', 'AUG',
+    'SEP', 'OCT', 'NOV', 'DEC'
+]
 
+
+values = []
+
+colors = [
+    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
+    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
+    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
 @data.route('/graphs', methods=["GET", "POST"])
 @login_required
 def graphs():
-    bar_labels=labels
-    bar_values=values
-    return render_template('graphs.html', title='Graphs', max=17000, labels=bar_labels, values=bar_values)
-
+    data = DailyStats.query\
+        .filter_by(user_id=current_user.id)\
+        .order_by(DailyStats.date.desc()).all()
+    for d in data:
+        values.append(d.weight)
+    line_labels=labels
+    line_values=values
+    return render_template('graphs.html', title='Graphs', max=17000, labels=line_labels, values=line_values)
+##################################################################################################################
 @data.route('/stats', methods=["GET", "POST"])
 @login_required
 def stats():
