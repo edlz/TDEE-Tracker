@@ -5,7 +5,7 @@ USE tdeedb;
 CREATE TABLE users (
 	id INTEGER NOT NULL AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL,
-    password VARCHAR(20) NOT NULL,
+    password VARCHAR(60) NOT NULL,
     PRIMARY KEY (id)
 );
 

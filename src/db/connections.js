@@ -1,14 +1,11 @@
-const mysql = require('mysql');
+const mysql = require("mysql");
 
-const createConnections = async () => {
-  
-}
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: 'localhost',
-  user: 'testuser',
-  password: 'password',
-  database: 'tdeedb'
+  host: "localhost",
+  user: "testuser",
+  password: "password",
+  database: "tdeedb",
 });
-
+console.log("mysql pool created");
 module.exports = pool;
