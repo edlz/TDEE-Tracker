@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json({ extended: false }));
 // Routes
 app.use("/api/users", require("./api/users"));
-app.use("/api/auth", require("./api/auth"));
+app.use("/api/data", require("./api/data"));
 
 const port = process.env.PORT || 3000;
 

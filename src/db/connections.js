@@ -6,6 +6,22 @@ const pool = mysql.createPool({
   user: "testuser",
   password: "password",
   database: "tdeedb",
+  timezone: "UTC",
 });
 console.log("mysql pool created");
+
+async function queryPromise(query, param) {
+  const rows = await new Promise((resolve, reject) => {
+    pool.query(query, param, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+  return rows;
+}
+
 module.exports = pool;
+module.exports = queryPromise;
