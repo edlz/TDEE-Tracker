@@ -7,6 +7,7 @@ app.use(express.json({ extended: false }));
 // Routes
 app.use("/api/users", require("./api/users"));
 app.use("/api/data", require("./api/data"));
+app.use("/api/login", require("./api/login"));
 
 const port = process.env.PORT || 3000;
 

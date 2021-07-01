@@ -45,7 +45,7 @@ router.get("/", auth, async (req, res) => {
     res.json({
       id: rows[0].id,
       username: rows[0].username,
-      created: rows[0].created.toString(),
+      created: rows[0].created,
     });
   } catch (err) {
     console.error(err.message);
@@ -94,13 +94,13 @@ router.post(
         );
 
         // JWT
-        const rows = await queryPromise(
+        const idRow = await queryPromise(
           "SELECT * FROM users WHERE users.username = ? LIMIT 1",
           [username]
         );
         const payload = {
           user: {
-            id: rows[0].id,
+            id: idRow[0].id,
           },
         };
         jwt.sign(
