@@ -10,15 +10,23 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE daily_entry (
+CREATE TABLE weights (
     userId INTEGER NOT NULL,
-    calories INTEGER NOT NULL,
     weightLB FLOAT NOT NULL,
-    weightDate DATE NOT NULL,
+    entryDate DATE NOT NULL,
     FOREIGN KEY (userId) REFERENCES users (id)
 );
 
-CREATE TABLE daily_tdee (
+CREATE TABLE calories (
     userId INTEGER NOT NULL,
+    calories INTEGER,
+    entryDate DATE,
+    FOREIGN KEY (userId) REFERENCES users (id)
+);
+
+CREATE TABLE goals (
+    userId INTEGER NOT NULL,
+    goal_weight FLOAT,
+    calorie_deficit INTEGER,
     FOREIGN KEY (userId) REFERENCES users (id)
 );

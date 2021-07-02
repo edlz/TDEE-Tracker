@@ -7,29 +7,11 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const auth = require("../auth");
 
+// date conversion
+const toMysqlFormat = require("../helper");
+Date.prototype.toMysqlFormat = toMysqlFormat;
 // mysql pooling
 const queryPromise = require("../db/connections");
-// date conversion https://stackoverflow.com/questions/5129624/convert-js-date-time-to-mysql-datetime
-function twoDigits(d) {
-  if (0 <= d && d < 10) return "0" + d.toString();
-  if (-10 < d && d < 0) return "-0" + (-1 * d).toString();
-  return d.toString();
-}
-Date.prototype.toMysqlFormat = function () {
-  return (
-    this.getUTCFullYear() +
-    "-" +
-    twoDigits(1 + this.getUTCMonth()) +
-    "-" +
-    twoDigits(this.getUTCDate()) +
-    " " +
-    twoDigits(this.getUTCHours()) +
-    ":" +
-    twoDigits(this.getUTCMinutes()) +
-    ":" +
-    twoDigits(this.getUTCSeconds())
-  );
-};
 
 // @route   GET api/users
 // @desc    get data on user
