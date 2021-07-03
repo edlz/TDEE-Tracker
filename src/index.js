@@ -10,6 +10,7 @@ app.use("/api/data", require("./api/data"));
 app.use("/api/login", require("./api/login"));
 app.use("/api/goals", require("./api/goals"));
 app.use("/api/weight", require("./api/weight"));
+app.use("/api/calories", require("./api/calories"));
 
 const port = process.env.PORT || 3000;
 

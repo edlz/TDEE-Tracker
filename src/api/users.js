@@ -28,6 +28,7 @@ router.get("/", auth, async (req, res) => {
       id: rows[0].id,
       username: rows[0].username,
       created: rows[0].created,
+      start_date: rows[0].start_date,
     });
   } catch (err) {
     console.error(err.message);
@@ -51,7 +52,8 @@ router.post(
     if (!err.isEmpty()) {
       return res.status(400).json({ errors: err.array() });
     }
-    const { username, password } = req.body;
+    // start_date formatted YYYY-MM-DD
+    const { username, password, start_date } = req.body;
 
     try {
       // check user
@@ -68,11 +70,9 @@ router.post(
         const salt = await bcrypt.genSaltSync(10);
         const hash = await bcrypt.hashSync(password, salt);
 
-        const t = Date.now();
-
         await queryPromise(
-          "INSERT INTO users (username, password, created) values(?,?,?)",
-          [username, hash, new Date().toMysqlFormat()]
+          "INSERT INTO users (username, password, created, start_date) values(?,?,?,?)",
+          [username, hash, new Date().toMysqlFormat(), start_date]
         );
 
         // JWT
