@@ -15,7 +15,7 @@ const queryPromise = require("../db/connections");
 router.get("/", auth, async (req, res) => {
   try {
     const rows = await queryPromise(
-      "SELECT * FROM calories WHERE calories.userId = ? ORDER BY calories.entryDate DESC",
+      "SELECT * FROM data_entry WHERE userId = ? AND calories IS NOT NULL ORDER BY entryDate DESC",
       [req.user.id]
     );
     let results = new Array();
@@ -33,20 +33,20 @@ router.get("/", auth, async (req, res) => {
 });
 
 // @route   POST api/calories
-// @desc    set calories on day for user
+// @desc    set calories on day for user formatted YYYY-MM-DD
 // @access  Private
 router.post("/", auth, async (req, res) => {
   try {
     const eday = new Date(req.body.day);
     const rows = await queryPromise(
-      "SELECT * FROM calories WHERE calories.userId = ? AND calories.entryDate = ?",
+      "SELECT * FROM data_entry WHERE userId = ? AND entryDate = ?",
       [req.user.id, eday.toMysqlFormat()]
     );
 
     if (rows.length > 0) {
       // entry exists, update calories
       await queryPromise(
-        "UPDATE calories SET calories = ? WHERE userId = ? AND entryDate = ?",
+        "UPDATE data_entry SET calories = ? WHERE userId = ? AND entryDate = ?",
         [req.body.calories, req.user.id, eday.toMysqlFormat()]
       );
       res.status(200).send("calories updated on " + eday.toMysqlFormat());
@@ -59,7 +59,7 @@ router.post("/", auth, async (req, res) => {
       const startDate = start[0].start_date;
 
       await queryPromise(
-        "INSERT INTO calories (userId, calories, entryDate, day) values(?,?,?,?)",
+        "INSERT INTO data_entry (userId, calories, entryDate, day) values(?,?,?,?)",
         [
           req.user.id,
           req.body.calories,
@@ -73,4 +73,5 @@ router.post("/", auth, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
 module.exports = router;

@@ -15,13 +15,13 @@ const queryPromise = require("../db/connections");
 router.get("/", auth, async (req, res) => {
   try {
     const rows = await queryPromise(
-      "SELECT * FROM weights WHERE weights.userId = ? ORDER BY weights.entryDate DESC",
+      "SELECT * FROM data_entry WHERE userId = ? AND weight IS NOT NULL ORDER BY entryDate DESC",
       [req.user.id]
     );
     let results = new Array();
     for (let i = 0; i < rows.length; i++) {
       results[i] = {
-        weight: rows[i].weightLB,
+        weight: rows[i].weight,
         date: rows[i].entryDate,
         day: rows[i].day,
       };
@@ -33,20 +33,20 @@ router.get("/", auth, async (req, res) => {
 });
 
 // @route   POST api/weight
-// @desc    set weight on day for user
+// @desc    set weight on day for user formatted YYYY-MM-DD
 // @access  Private
 router.post("/", auth, async (req, res) => {
   try {
     const eday = new Date(req.body.day);
     const rows = await queryPromise(
-      "SELECT * FROM weights WHERE weights.userId = ? AND weights.entryDate = ?",
+      "SELECT * FROM data_entry WHERE userId = ? AND entryDate = ?",
       [req.user.id, eday.toMysqlFormat()]
     );
 
     if (rows.length > 0) {
       // entry exists, update weight
       await queryPromise(
-        "UPDATE weights SET weightLB = ? WHERE userId = ? AND entryDate = ?",
+        "UPDATE data_entry SET weight = ? WHERE userId = ? AND entryDate = ?",
         [req.body.weight, req.user.id, eday.toMysqlFormat()]
       );
       res.status(200).send("Weight updated on " + eday.toMysqlFormat());
@@ -59,7 +59,7 @@ router.post("/", auth, async (req, res) => {
       const startDate = start[0].start_date;
 
       await queryPromise(
-        "INSERT INTO weights (userId, weightLB, entryDate, day) values(?,?,?,?)",
+        "INSERT INTO data_entry (userId, weight, entryDate, day) values(?,?,?,?)",
         [
           req.user.id,
           req.body.weight,
@@ -73,4 +73,5 @@ router.post("/", auth, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
 module.exports = router;

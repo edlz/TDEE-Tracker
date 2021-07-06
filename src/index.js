@@ -11,7 +11,7 @@ app.use("/api/login", require("./api/login"));
 app.use("/api/goals", require("./api/goals"));
 app.use("/api/weight", require("./api/weight"));
 app.use("/api/calories", require("./api/calories"));
-
+app.use("/api/tdee", require("./api/tdee"));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {

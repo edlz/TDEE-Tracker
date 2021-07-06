@@ -19,7 +19,7 @@ const queryPromise = require("../db/connections");
 router.get("/", auth, async (req, res) => {
   try {
     const rows = await queryPromise(
-      "SELECT * FROM users WHERE users.id = ? LIMIT 1",
+      "SELECT * FROM users WHERE id = ? LIMIT 1",
       [req.user.id]
     );
     //console.log(rows[0].created.toString());
@@ -53,12 +53,12 @@ router.post(
       return res.status(400).json({ errors: err.array() });
     }
     // start_date formatted YYYY-MM-DD
-    const { username, password, start_date } = req.body;
+    const { username, password, start_date, start_weight } = req.body;
 
     try {
       // check user
       const rows = await queryPromise(
-        "SELECT * FROM users WHERE users.username = ? LIMIT 1",
+        "SELECT * FROM users WHERE username = ? LIMIT 1",
         [username]
       );
 
@@ -74,12 +74,19 @@ router.post(
           "INSERT INTO users (username, password, created, start_date) values(?,?,?,?)",
           [username, hash, new Date().toMysqlFormat(), start_date]
         );
-
-        // JWT
+        //insert start date 0
         const idRow = await queryPromise(
-          "SELECT * FROM users WHERE users.username = ? LIMIT 1",
+          "SELECT * FROM users WHERE username = ? LIMIT 1",
           [username]
         );
+
+        await queryPromise(
+          "INSERT INTO data_entry (userId, weight, entryDate, day) values(?,?,?,1)",
+          [idRow[0].id, start_weight, start_date]
+        );
+
+        // JWT
+
         const payload = {
           user: {
             id: idRow[0].id,
