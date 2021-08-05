@@ -2,6 +2,7 @@
 :root {
   --primary-color: #ff7029;
   --secondary-color: #ff5500;
+  --light-primary-color: rgb(255, 151, 100);
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;

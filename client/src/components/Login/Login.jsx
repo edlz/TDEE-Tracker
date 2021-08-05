@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -18,14 +18,13 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("submitting");
     login(username, password);
   };
   if (isAuthenticated) {
     return <Redirect to="/home" />;
   }
   return (
-    <div className="container">
+    <Fragment>
       <h1 className="title text-primary">Sign In</h1>
       <p className="lead">
         <i className="fas fa-user"></i> Sign Into Your Account
@@ -57,9 +56,10 @@ const Login = ({ login, isAuthenticated }) => {
       <p className="my-1">
         Need to create account? <Link to="/register">Register</Link>
       </p>
-    </div>
+    </Fragment>
   );
 };
+
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,

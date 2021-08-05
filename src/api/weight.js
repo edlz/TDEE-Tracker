@@ -22,12 +22,13 @@ router.get("/", auth, async (req, res) => {
     for (let i = 0; i < rows.length; i++) {
       results[i] = {
         weight: rows[i].weight,
-        date: rows[i].entryDate,
+        date: rows[i].entryDate.toMysqlFormat(),
         day: rows[i].day,
       };
     }
     res.json(results);
   } catch (err) {
+    console.log(err);
     res.status(500).send("Server Error");
   }
 });

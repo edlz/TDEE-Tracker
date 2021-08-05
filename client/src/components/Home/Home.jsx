@@ -1,24 +1,50 @@
-import { Redirect } from "react-router-dom";
+import React, { useEffect, Fragment } from "react";
+
+// components
+import Table from "./Table/Table";
+import WeightEntry from "./WeightEntry/WeightEntry";
+// redux
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import { loadData } from "../../actions/data";
 import "./Home.css";
 
-const Home = ({ isAuthenticated }) => {
-  if (!isAuthenticated) {
-    return <Redirect to="/" />;
-  }
+const Home = ({ loadData, data, loading }) => {
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const columns = [
+    { Header: "Day", accessor: "day" },
+    { Header: "Weight", accessor: "weight" },
+    { Header: "Calories", accessor: "calories" },
+    { Header: "Date", accessor: "date" },
+  ];
+
   return (
     <div className="home">
-      <h1>home</h1>
+      {!loading && (
+        <Fragment>
+          <div className="container">
+            <Table data={data} header={columns} />
+          </div>
+          <div className="container">
+            <WeightEntry startingDay={data[data.length - 1].date} />
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 };
+
 Home.propTypes = {
-  isAuthenticated: PropTypes.bool,
+  loadData: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
 };
+
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
+  data: state.data.data,
+  loading: state.data.loading,
 });
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, { loadData })(Home);

@@ -22,7 +22,7 @@ router.get("/", auth, async (req, res) => {
     for (let i = 0; i < rows.length; i++) {
       results[i] = {
         calories: rows[i].calories,
-        date: rows[i].entryDate,
+        date: rows[i].entryDate.toMysqlFormat(),
         day: rows[i].day,
       };
     }
@@ -49,7 +49,7 @@ router.post("/", auth, async (req, res) => {
         "UPDATE data_entry SET calories = ? WHERE userId = ? AND entryDate = ?",
         [req.body.calories, req.user.id, eday.toMysqlFormat()]
       );
-      res.status(200).send("calories updated on " + eday.toMysqlFormat());
+      res.status(200).send("Calories updated on " + eday.toMysqlFormat());
     } else {
       // new entry
       const start = await queryPromise(
@@ -67,7 +67,7 @@ router.post("/", auth, async (req, res) => {
           Math.floor((eday - startDate) / (24 * 60 * 60 * 1000)) + 1,
         ]
       );
-      res.status(200).send("calories set on " + eday.toMysqlFormat());
+      res.status(200).send("Calories set on " + eday.toMysqlFormat());
     }
   } catch (err) {
     res.status(500).send("Server error");
