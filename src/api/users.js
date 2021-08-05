@@ -8,7 +8,7 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../auth");
 
 // date conversion
-const toMysqlFormat = require("../helper");
+const toMysqlFormat = require("../utils");
 Date.prototype.toMysqlFormat = toMysqlFormat;
 // mysql pooling
 const queryPromise = require("../db/connections");
@@ -64,7 +64,7 @@ router.post(
 
       if (rows.length > 0) {
         // user exists, error
-        return res.status(400).json({ errors: [{ msg: "User exists" }] });
+        return res.status(400).json({ errors: [{ msg: "Username taken" }] });
       } else {
         // register user
         const salt = await bcrypt.genSaltSync(10);
@@ -86,7 +86,6 @@ router.post(
         );
 
         // JWT
-
         const payload = {
           user: {
             id: idRow[0].id,
