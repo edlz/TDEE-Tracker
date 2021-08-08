@@ -5,6 +5,8 @@ import {
   WEIGHT_ERR,
   CALORIE_ERR,
   CALORIE_SUCCESS,
+  DELETE_SUCCESS,
+  DELETE_ERR,
 } from "../actions/constants";
 
 const initialState = {
@@ -22,10 +24,12 @@ const e = (state = initialState, action) => {
     case ERR_DATA:
       return { ...state, error: payload, loading: false };
     case WEIGHT_SUCCESS:
-    case WEIGHT_ERR:
     case CALORIE_SUCCESS:
-    case CALORIE_ERR:
+    case DELETE_SUCCESS:
       return { ...state, loading: true };
+    case WEIGHT_ERR:
+    case CALORIE_ERR:
+    case DELETE_ERR:
     default:
       return { ...state };
   }

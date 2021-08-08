@@ -7,7 +7,6 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL,
     password VARCHAR(60) NOT NULL,
     created DATETIME NOT NULL,
-    start_date DATE NOT NULL,
     PRIMARY KEY (id)
 );
 

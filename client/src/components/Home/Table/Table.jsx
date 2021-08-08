@@ -1,13 +1,19 @@
 import React, { Fragment } from "react";
+// redux
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { deleteData } from "../../../actions/data";
 
 import "./Table.css";
-const Table = ({ data, header }) => {
+
+const Table = ({ data, header, deleteData }) => {
   const accessors = header.map((x) => x["accessor"]);
   const headers = header.map((x) => x["Header"]);
 
   const onClick = (date) => {
     console.log("delete date");
     console.log(date);
+    deleteData(date);
   };
 
   const createRow = (arr, key, btn) => {
@@ -49,4 +55,8 @@ const Table = ({ data, header }) => {
   );
 };
 
-export default Table;
+Table.propTypes = {
+  deleteData: PropTypes.func.isRequired,
+};
+
+export default connect(null, { deleteData })(Table);

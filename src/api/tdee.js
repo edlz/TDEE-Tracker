@@ -106,16 +106,16 @@ function weeklyTDEE(weekNum, resultSet) {
   return tdeeArray[weekNum - 1];
 }
 
-// @route   GET api/tdee
+// @route   GET api/tdee/date
 // @desc    calculate tdee on particular week formatted YYYY-MM-DD
 // @access  Private
-router.get("/", auth, async (req, res) => {
+router.get("/:date", auth, async (req, res) => {
   try {
     const resultSet = await queryPromise(
-      "SELECT * FROM data_entry WHERE userId = ? ORDER BY day ASC",
+      "SELECT * FROM data_entry WHERE userId = ? ORDER BY entryDate ASC",
       [req.user.id]
     );
-    const [year, month, day] = req.query.date.split("-");
+    const [year, month, day] = req.params.date.split("-");
     const date = new Date(year, month - 1, day);
 
     const startDate = resultSet[0].entryDate;

@@ -8,6 +8,8 @@ import {
   CALORIE_ERR,
   GET_DATA,
   ERR_DATA,
+  DELETE_ERR,
+  DELETE_SUCCESS,
 } from "./constants";
 
 // get all data
@@ -85,6 +87,21 @@ export const newData =
   };
 
 // delete data
-export const deleteData =
-  ({ date }) =>
-  async (dispatch) => {};
+export const deleteData = (date) => async (dispatch) => {
+  try {
+    const res = axios.delete(`/api/data/${date}`);
+    console.log(res);
+    dispatch({
+      type: DELETE_SUCCESS,
+    });
+    dispatch(setAlert(res.data, "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: DELETE_ERR,
+    });
+  }
+};

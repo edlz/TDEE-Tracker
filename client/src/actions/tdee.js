@@ -3,11 +3,7 @@ import { ERR_TDEE, GET_TDEE } from "./constants";
 
 export const getTdee = (date) => async (dispatch) => {
   try {
-    const res = await axios.get("/api/tdee", {
-      params: {
-        date,
-      },
-    });
+    const res = await axios.get(`/api/tdee/${date}`);
 
     dispatch({
       type: GET_TDEE,

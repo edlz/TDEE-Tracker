@@ -18,6 +18,9 @@ export const WEIGHT_ERR = "WEIGHT_ERR";
 
 export const CALORIE_SUCCESS = "CALORIE_SUCCESS";
 export const CALORIE_ERR = "CALORIE_ERR";
+
+export const DELETE_SUCCESS = "DELETE_SUCCESS";
+export const DELETE_ERR = "DELETE_ERR";
 // tdee
 export const GET_TDEE = "GET_TDEE";
 export const ERR_TDEE = "ERR_TDEE";

@@ -30,6 +30,31 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// @route   GET api/data/:date
+// @desc    get data for user with id
+// @access  Private
+
+router.delete("/:date", auth, async (req, res) => {
+  try {
+    const rows = await queryPromise(
+      "SELECT * FROM data_entry WHERE data_entry.userId = ? ORDER BY entryDate DESC",
+      [req.user.id]
+    );
+    if (rows.length <= 1) {
+      res.status(500).send("Cannot delete starting entry");
+      return;
+    }
+    await queryPromise(
+      "DELETE FROM data_entry WHERE userId = ? AND entryDate = ?",
+      [req.user.id, req.params.date]
+    );
+    res.status(200).send("Deleted entry on date " + req.params.date);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   POST api/data
 // @desc    enter data for particular date for current user
 // @access  Private

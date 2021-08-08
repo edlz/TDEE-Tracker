@@ -53,10 +53,11 @@ router.post("/", auth, async (req, res) => {
     } else {
       // new entry
       const start = await queryPromise(
-        "SELECT * FROM users WHERE users.id = ?",
+        "SELECT * FROM data_entry WHERE userId = ? ORDER BY entryDate DESC",
         [req.user.id]
       );
-      const startDate = start[0].start_date;
+
+      const startDate = start[0].entryDate;
 
       await queryPromise(
         "INSERT INTO data_entry (userId, calories, entryDate, day) values(?,?,?,?)",
