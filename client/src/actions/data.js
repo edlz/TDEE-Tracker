@@ -89,8 +89,8 @@ export const newData =
 // delete data
 export const deleteData = (date) => async (dispatch) => {
   try {
-    const res = axios.delete(`/api/data/${date}`);
-    console.log(res);
+    const res = await axios.delete(`/api/data/${date}`);
+
     dispatch({
       type: DELETE_SUCCESS,
     });

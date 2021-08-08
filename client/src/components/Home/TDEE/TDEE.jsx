@@ -20,7 +20,7 @@ const TDEE = ({ date, getTdee, tdee, loading }) => {
       <div className="tdee-inner-text">
         <h1>
           <span>Total Daily Energy Expenditure: </span>
-          <span className="tdee-number">{!loading ? tdee : "---"}</span>
+          <span className="tdee-number">{!loading ? tdee : "loading..."}</span>
         </h1>
       </div>
 

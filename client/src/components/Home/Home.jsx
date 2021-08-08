@@ -26,9 +26,13 @@ const Home = ({ loadData, data, loading }) => {
     <div className="home">
       {!loading && (
         <Fragment>
-          <TDEE date={data && data[0].date} />
+          <TDEE date={data && data.length > 0 && data[0].date} />
           <div className="container">
-            <WeightEntry startingDay={data[data.length - 1].date} />
+            <WeightEntry
+              startingDay={
+                data && data.length > 0 && data[data.length - 1].date
+              }
+            />
           </div>
           <div className="container">
             <div>

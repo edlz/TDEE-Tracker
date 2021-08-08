@@ -9,11 +9,9 @@ import "./Navbar.css";
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
     <ul>
-      <li className="btn btn-secondary">
-        <a onClick={logout} href="/">
-          Logout
-        </a>
-      </li>
+      <button className="btn btn-secondary" onClick={logout}>
+        Logout
+      </button>
     </ul>
   );
   const guestLinks = (

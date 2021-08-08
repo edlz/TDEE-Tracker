@@ -11,8 +11,6 @@ const Table = ({ data, header, deleteData }) => {
   const headers = header.map((x) => x["Header"]);
 
   const onClick = (date) => {
-    console.log("delete date");
-    console.log(date);
     deleteData(date);
   };
 

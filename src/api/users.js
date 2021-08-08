@@ -8,7 +8,7 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../auth");
 
 // date conversion
-const toMysqlFormat = require("../utils");
+const toMysqlFormat = require("../utils/utils");
 Date.prototype.toMysqlFormat = toMysqlFormat;
 // mysql pooling
 const queryPromise = require("../db/connections");
@@ -31,7 +31,7 @@ router.get("/", auth, async (req, res) => {
       start_date: rows[0].start_date,
     });
   } catch (err) {
-    console.error(err.message);
+    //console.error(err.message);
     res.status(500).send("Server error");
   }
 });
@@ -71,8 +71,8 @@ router.post(
         const hash = await bcrypt.hashSync(password, salt);
 
         await queryPromise(
-          "INSERT INTO users (username, password, created, start_date) values(?,?,?,?)",
-          [username, hash, new Date().toMysqlFormat(), start_date]
+          "INSERT INTO users (username, password, created) values(?,?,?)",
+          [username, hash, new Date().toMysqlFormat()]
         );
         //insert start date 0
         const idRow = await queryPromise(
@@ -102,7 +102,7 @@ router.post(
         );
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       res.status(500).send("Server error");
     }
   }

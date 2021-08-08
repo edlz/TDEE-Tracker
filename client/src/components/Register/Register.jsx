@@ -9,12 +9,13 @@ import PropTypes from "prop-types";
 import "./Register.css";
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
+  const ini = new Date();
   const [formData, updateFormData] = useState({
     username: "",
     password: "",
     password2: "",
     start_weight: "",
-    start_date: "",
+    start_date: ini.toISOString().split("T")[0],
   });
 
   const { username, password, password2, start_weight, start_date } = formData;

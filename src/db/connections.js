@@ -8,9 +8,9 @@ const pool = mysql.createPool({
   database: "tdeedb",
   timezone: "UTC",
 });
-console.log("mysql pool created");
+console.log("MYSQL pool created...");
 
-async function queryPromise(query, param) {
+const queryPromise = async (query, param) => {
   const rows = await new Promise((resolve, reject) => {
     pool.query(query, param, (err, rows) => {
       if (err) {
@@ -21,7 +21,7 @@ async function queryPromise(query, param) {
     });
   });
   return rows;
-}
+};
 
 module.exports = pool;
 module.exports = queryPromise;

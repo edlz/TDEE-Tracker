@@ -6,11 +6,12 @@ import { newData } from "../../../actions/data";
 
 const WeightEntry = ({ newData, startingDay }) => {
   const startingDate = new Date(startingDay);
+  const ini = new Date();
   const [formData, updateFormData] = useState({
     weight: "",
     calories: "",
     day: "",
-    date: "",
+    date: ini.toISOString().split("T")[0],
   });
 
   const { weight, calories, day, date } = formData;
@@ -48,15 +49,17 @@ const WeightEntry = ({ newData, startingDay }) => {
       </p>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
+          <label>Weight (LB) </label>
           <input
             type="number"
             name="weight"
-            placeholder="Weight (LB)"
+            placeholder="ex: 200.3"
             value={weight}
             onChange={onChange}
           />
         </div>
         <div className="form-group">
+          <label>Calories</label>
           <input
             type="number"
             name="calories"
@@ -66,6 +69,7 @@ const WeightEntry = ({ newData, startingDay }) => {
           />
         </div>
         <div className="form-group">
+          <label>Day</label>
           <input
             type="number"
             name="day"
@@ -75,6 +79,7 @@ const WeightEntry = ({ newData, startingDay }) => {
           />
         </div>
         <div className="form-group">
+          <label>Date</label>
           <input
             type="date"
             name="date"

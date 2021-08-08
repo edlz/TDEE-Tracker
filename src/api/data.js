@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../auth");
 
+const updateDays = require("../utils/updateDays");
 // mysql pooling
 const queryPromise = require("../db/connections");
 
@@ -41,13 +42,16 @@ router.delete("/:date", auth, async (req, res) => {
       [req.user.id]
     );
     if (rows.length <= 1) {
-      res.status(500).send("Cannot delete starting entry");
-      return;
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Cannot delete starting entry" }] });
     }
     await queryPromise(
       "DELETE FROM data_entry WHERE userId = ? AND entryDate = ?",
       [req.user.id, req.params.date]
     );
+    //update first day to 1
+    await updateDays(req.user.id);
     res.status(200).send("Deleted entry on date " + req.params.date);
   } catch (err) {
     console.log(err);
@@ -55,31 +59,4 @@ router.delete("/:date", auth, async (req, res) => {
   }
 });
 
-// @route   POST api/data
-// @desc    enter data for particular date for current user
-// @access  Private
-
-// router.post("/", auth, async (req, res) => {
-//   try {
-//     const rows = await queryPromise(
-//       "SELECT * FROM users WHERE users.userId = ?",
-//       [req.user.id]
-//     );
-//     const { calories, weight, units } = req.body;
-
-//     if (rows.length > 0) {
-//       // entry exists, replace
-//     } else {
-//       // new entry
-//       const t = Date.now();
-
-//       await queryPromise(
-//         "INSERT INTO daily_entry (username, password, created) values(?,?,?)",
-//         [username, hash, new Date().toMysqlFormat()]
-//       );
-//     }
-//   } catch (err) {
-//     res.status(500).send("Server error");
-//   }
-// });
 module.exports = router;

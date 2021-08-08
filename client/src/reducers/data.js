@@ -10,7 +10,6 @@ import {
 } from "../actions/constants";
 
 const initialState = {
-  username: "",
   data: [],
   loading: true,
   error: {},

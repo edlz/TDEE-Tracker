@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../auth");
 
 // date conversion
-const toMysqlFormatDay = require("../utils");
+const toMysqlFormatDay = require("../utils/utils");
 Date.prototype.toMysqlFormat = toMysqlFormatDay;
 
 // mysql pooling

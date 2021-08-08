@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../auth");
 
+const updateDays = require("../utils/updateDays");
 // date conversion
-const toMysqlFormatDay = require("../utils");
+const toMysqlFormatDay = require("../utils/utils");
 Date.prototype.toMysqlFormat = toMysqlFormatDay;
 
 // mysql pooling
@@ -54,7 +55,7 @@ router.post("/", auth, async (req, res) => {
     } else {
       // new entry
       const start = await queryPromise(
-        "SELECT * FROM data_entry WHERE userId = ? ORDER BY entryDate DESC",
+        "SELECT * FROM data_entry WHERE userId = ? ORDER BY entryDate ASC",
         [req.user.id]
       );
 
@@ -69,6 +70,8 @@ router.post("/", auth, async (req, res) => {
           Math.floor((eday - startDate) / (24 * 60 * 60 * 1000)) + 1,
         ]
       );
+      //update day number if before starting day
+      await updateDays(req.user.id);
       res.status(200).send("Weight set on " + eday.toMysqlFormat());
     }
   } catch (err) {

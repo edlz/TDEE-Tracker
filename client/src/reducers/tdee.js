@@ -11,7 +11,7 @@ const e = (state = initialState, action) => {
     case GET_TDEE:
       return { ...state, loading: false, tdee: payload };
     case ERR_TDEE:
-      return { ...state, loading: false, tdee: "???? Error ????" };
+      return { ...state, loading: false, tdee: "?" };
     default:
       return state;
   }
