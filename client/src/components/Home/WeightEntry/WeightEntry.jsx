@@ -38,7 +38,6 @@ const WeightEntry = ({ newData, startingDay }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("submitting");
     newData(formData);
   };
 

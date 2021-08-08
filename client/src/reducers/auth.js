@@ -14,6 +14,7 @@ const initialState = {
   loading: true,
   user: null,
 };
+
 const e = (state = initialState, action) => {
   const { type, payload } = action;
 

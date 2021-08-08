@@ -34,10 +34,10 @@ export const login = (username, password) => async (dispatch) => {
     username,
     password,
   });
-  console.log(body);
+
   try {
     const res = await axios.post("/api/login", body, config);
-    console.log(res);
+
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,

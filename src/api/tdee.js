@@ -115,16 +115,19 @@ router.get("/", auth, async (req, res) => {
       "SELECT * FROM data_entry WHERE userId = ? ORDER BY day ASC",
       [req.user.id]
     );
-    const [year, month, day] = req.body.date.split("-");
+    const [year, month, day] = req.query.date.split("-");
     const date = new Date(year, month - 1, day);
 
     const startDate = resultSet[0].entryDate;
     const weekNum = Math.ceil((date - startDate) / (24 * 60 * 60 * 1000) / 7);
-    const tdee = weeklyTDEE(weekNum, resultSet);
+    if (weekNum < 0) {
+      res.json({ tdee: 2500 });
+      return;
+    }
+    const tdee = Math.floor(weeklyTDEE(weekNum, resultSet));
 
     res.json({ tdee });
   } catch (err) {
-    throw err;
     res.status(500).send("Server Error");
   }
 });

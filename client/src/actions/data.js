@@ -2,8 +2,6 @@ import axios from "axios";
 import { setAlert } from "./alert";
 
 import {
-  GET_WEIGHTS,
-  ERR_WEIGHTS,
   WEIGHT_SUCCESS,
   WEIGHT_ERR,
   CALORIE_SUCCESS,
@@ -16,30 +14,14 @@ import {
 export const loadData = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/data");
-    console.log(res);
+
     dispatch({ type: GET_DATA, payload: res.data });
-    dispatch(setAlert("Data Loaded", "success"));
   } catch (err) {
     dispatch({
       type: ERR_DATA,
       payload: { msg: err.response.statusText, status: err.response.status },
     });
     dispatch(setAlert("Could Not Retrieve Data", "danger"));
-  }
-};
-
-// get all weights
-export const loadWeights = () => async (dispatch) => {
-  try {
-    const res = await axios.get("/api/weight");
-    dispatch({ type: GET_WEIGHTS, payload: res.data });
-    dispatch(setAlert("Weights Retrieved", "success"));
-  } catch (err) {
-    dispatch({
-      type: ERR_WEIGHTS,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-    dispatch(setAlert("Could Not Retrive Data", "danger"));
   }
 };
 
@@ -52,6 +34,8 @@ export const newData =
         "Content-Type": "application/json",
       },
     };
+    let caloriesUpdated = false;
+    let weightUpdated = false;
     if (calories.length > 0) {
       try {
         const calorieBody = {
@@ -59,9 +43,8 @@ export const newData =
           day: date,
         };
         const res = await axios.post("/api/calories", calorieBody, config);
-
+        caloriesUpdated = res.data;
         dispatch({ type: CALORIE_SUCCESS });
-        dispatch(setAlert(res.data, "success"));
       } catch (err) {
         const errors = err.response.data.errors;
         if (errors) {
@@ -81,7 +64,7 @@ export const newData =
         const res = await axios.post("/api/weight", weightBody, config);
 
         dispatch({ type: WEIGHT_SUCCESS });
-        dispatch(setAlert(res.data, "success"));
+        weightUpdated = res.data;
       } catch (err) {
         const errors = err.response.data.errors;
         if (errors) {
@@ -92,5 +75,16 @@ export const newData =
         });
       }
     }
-    dispatch(loadData());
+    if (caloriesUpdated && weightUpdated) {
+      dispatch(setAlert("Calories and " + weightUpdated, "success"));
+    } else if (caloriesUpdated) {
+      dispatch(setAlert(caloriesUpdated, "success"));
+    } else if (weightUpdated) {
+      dispatch(setAlert(weightUpdated, "success"));
+    }
   };
+
+// delete data
+export const deleteData =
+  ({ date }) =>
+  async (dispatch) => {};

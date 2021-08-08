@@ -1,0 +1,29 @@
+.tdee {
+  display: flex;
+  width: 100%;
+  height: 15%;
+  background-color: var(--primary-color);
+  padding: 1.5rem;
+  margin: auto;
+  border-radius: 6px;
+}
+.tdee-inner-text {
+  width: 70%;
+}
+
+.tdee input[type="text"] {
+  display: block;
+  padding: 0.4rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+}
+
+.tdee h1 {
+  color: white;
+}
+
+.tdee-number {
+  color: aqua;
+  font-size: x-large;
+  font-weight: bolder;
+}

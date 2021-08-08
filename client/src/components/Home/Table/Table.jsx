@@ -4,12 +4,29 @@ import "./Table.css";
 const Table = ({ data, header }) => {
   const accessors = header.map((x) => x["accessor"]);
   const headers = header.map((x) => x["Header"]);
-  const createRow = (arr, key) => {
+
+  const onClick = (date) => {
+    console.log("delete date");
+    console.log(date);
+  };
+
+  const createRow = (arr, key, btn) => {
     return (
       <tr key={key}>
         {arr.map((x, i) => (
           <th key={i}>{x}</th>
         ))}
+        <th>
+          {btn && (
+            <button
+              className="btn-delete"
+              value={arr["date"]}
+              onClick={() => onClick(arr[3])}
+            >
+              x
+            </button>
+          )}
+        </th>
       </tr>
     );
   };
@@ -23,7 +40,9 @@ const Table = ({ data, header }) => {
       <table>
         <thead>{createRow(headers)}</thead>
         <tbody>
-          {data.map((d, i) => createRow(createAccessorArray(d, accessors), i))}
+          {data.map((d, i) =>
+            createRow(createAccessorArray(d, accessors), i, true)
+          )}
         </tbody>
       </table>
     </Fragment>
