@@ -11,6 +11,11 @@ const Landing = ({ isAuthenticated }) => {
       <div className="dark-overlay">
         <div className="landing-inner">
           <h1 className="title">Total Daily Energy Expenditure Tracker</h1>
+          <p>
+            Your TDEE is the number of calories you burn in a day. This app
+            calculates your TDEE by inputting your daily calories consumed and
+            your weight.
+          </p>
           <div className="buttons">
             {!isAuthenticated ? (
               <Fragment>

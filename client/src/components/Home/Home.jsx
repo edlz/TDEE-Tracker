@@ -35,6 +35,8 @@ const Home = ({ loadData, data, loading }) => {
               startingDay={
                 data && data.length > 0 && data[data.length - 1].date
               }
+              lastDate={data && data.length > 0 && data[0].date}
+              lastDay={data && data.length > 0 && data[0].day}
             />
           </div>
           <div className="container">

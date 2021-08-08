@@ -4,13 +4,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { newData } from "../../../actions/data";
 
-const WeightEntry = ({ newData, startingDay }) => {
+const WeightEntry = ({ newData, startingDay, lastDay, lastDate }) => {
   const startingDate = new Date(startingDay);
-  const ini = new Date();
+  const ini = new Date(lastDate);
+  ini.setDate(ini.getDate() + 1);
+
+  console.log(ini);
   const [formData, updateFormData] = useState({
     weight: "",
     calories: "",
-    day: "",
+    day: lastDay + 1,
     date: ini.toISOString().split("T")[0],
   });
 
