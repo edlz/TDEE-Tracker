@@ -1,9 +1,10 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 // components
 import Table from "./Table/Table";
 import WeightEntry from "./WeightEntry/WeightEntry";
 import TDEE from "./TDEE/TDEE";
+import Graphs from "./Graphs/Graphs";
 // redux
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -11,6 +12,8 @@ import { loadData } from "../../actions/data";
 import "./Home.css";
 
 const Home = ({ loadData, data, loading }) => {
+  const [showingGraphs, setGraphs] = useState(false);
+
   useEffect(() => {
     loadData();
   }, [loading]);
@@ -35,12 +38,21 @@ const Home = ({ loadData, data, loading }) => {
             />
           </div>
           <div className="container">
-            <div>
-              <input type="radio"></input>
-              <input type="radio"></input>
+            <div className="graph-container">
+              <button
+                className="btn"
+                onClick={() => {
+                  setGraphs(!showingGraphs);
+                }}
+              >
+                {!showingGraphs ? "Show Graphs" : "Show Table"}
+              </button>
             </div>
-
-            <Table data={data} header={columns} />
+            {!showingGraphs ? (
+              <Table data={data} header={columns} />
+            ) : (
+              <Graphs data={data} />
+            )}
           </div>
         </Fragment>
       )}
