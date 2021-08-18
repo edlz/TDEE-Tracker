@@ -22,6 +22,8 @@ git clone https://github.com/ez0623/TDEE-Tracker.git
 ```
 cd ./TDEE-Tracker
 npm install
+cd ./client
+npm install
 ```
 
 ### 3. Setup the MYSQL Database

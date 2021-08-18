@@ -80,12 +80,12 @@ const Graphs = ({ data }) => {
         </div>
         <Line data={caloriesData} options={options} />
       </div>
-      <div>
+      {/* <div>
         <div className="header">
           <h3>TDEE by Week</h3>
         </div>
         <Line data={tdeeData} options={options} />
-      </div>
+      </div> */}
     </Fragment>
   );
 };
