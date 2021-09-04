@@ -11,7 +11,7 @@ const auth = require("../auth");
 const toMysqlFormat = require("../utils/utils");
 Date.prototype.toMysqlFormat = toMysqlFormat;
 // mysql pooling
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 // @route   GET api/users
 // @desc    get data on user

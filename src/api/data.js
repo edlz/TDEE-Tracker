@@ -4,7 +4,7 @@ const auth = require("../auth");
 
 const updateDays = require("../utils/updateDays");
 // mysql pooling
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 // @route   GET api/data
 // @desc    get data for user with id

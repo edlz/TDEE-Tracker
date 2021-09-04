@@ -6,7 +6,7 @@ const config = require("config");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 // mysql pooling
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 // @route   POST api/login
 // @desc    login user

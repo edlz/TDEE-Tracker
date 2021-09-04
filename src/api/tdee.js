@@ -7,7 +7,7 @@ const toMysqlFormatDay = require("../utils/utils");
 Date.prototype.toMysqlFormat = toMysqlFormatDay;
 
 // mysql pooling
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 // 1. if week is 1, calculate first week tdee
 // 2. else, calculate weekly tdee and average over past tdees

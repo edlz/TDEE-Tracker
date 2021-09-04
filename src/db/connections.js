@@ -23,5 +23,4 @@ const queryPromise = async (query, param) => {
   return rows;
 };
 
-module.exports = pool;
-module.exports = queryPromise;
+module.exports = { pool, queryPromise };

@@ -8,7 +8,7 @@ const toMysqlFormatDay = require("../utils/utils");
 Date.prototype.toMysqlFormat = toMysqlFormatDay;
 
 // mysql pooling
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 // @route   GET api/weight
 // @desc    get all weights for current user

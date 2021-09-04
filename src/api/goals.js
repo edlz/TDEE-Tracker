@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../auth");
 
 // mysql pooling
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 // @route   GET api/goals
 // @desc    get goals for user
