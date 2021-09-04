@@ -16,7 +16,7 @@ CREATE TABLE data_entry (
     calories INTEGER,
     entryDate DATE NOT NULL,
     day INTEGER NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users (id)
+    FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
@@ -24,5 +24,5 @@ CREATE TABLE goals (
     userId INTEGER NOT NULL,
     goal_weight FLOAT,
     calorie_deficit INTEGER,
-    FOREIGN KEY (userId) REFERENCES users (id)
+    FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE
 );

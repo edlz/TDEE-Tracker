@@ -11,8 +11,11 @@ app.use("/api/goals", require("./src/api/goals"));
 app.use("/api/weight", require("./src/api/weight"));
 app.use("/api/calories", require("./src/api/calories"));
 app.use("/api/tdee", require("./src/api/tdee"));
-const port = process.env.PORT || 5000;
+
+const port = process.env.PORT || 6000;
 
 app.listen(port, () => {
   console.log("Server up on port " + port);
 });
+
+module.exports = app;
