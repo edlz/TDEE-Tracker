@@ -4,8 +4,7 @@ const auth = require("../auth");
 
 const updateDays = require("../utils/updateDays");
 // date conversion
-const toMysqlFormatDay = require("../utils/utils");
-Date.prototype.toMysqlFormat = toMysqlFormatDay;
+Date.prototype.toMysqlFormat = require("../utils/utils").toMysqlFormatDay;
 
 // mysql pooling
 const { queryPromise } = require("../db/connections");

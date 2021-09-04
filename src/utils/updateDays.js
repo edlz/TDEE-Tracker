@@ -1,4 +1,4 @@
-const queryPromise = require("../db/connections");
+const { queryPromise } = require("../db/connections");
 
 const updateDays = async (id) => {
   const rows = await queryPromise(

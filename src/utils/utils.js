@@ -29,5 +29,4 @@ toMysqlFormatDay = function () {
     twoDigits(this.getUTCDate())
   );
 };
-module.exports = toMysqlFormat;
-module.exports = toMysqlFormatDay;
+module.exports = { toMysqlFormat, toMysqlFormatDay };

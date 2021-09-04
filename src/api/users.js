@@ -8,8 +8,7 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../auth");
 
 // date conversion
-const toMysqlFormat = require("../utils/utils");
-Date.prototype.toMysqlFormat = toMysqlFormat;
+Date.prototype.toMysqlFormat = require("../utils/utils").toMysqlFormatDay;
 // mysql pooling
 const { queryPromise } = require("../db/connections");
 
