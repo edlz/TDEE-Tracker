@@ -68,3 +68,11 @@ npm install
 ```
 npm run dev
 ```
+
+## Testing
+
+#### Run Mocha tests to ensure app and mysql database is working properly.
+
+```
+npm run test
+```
