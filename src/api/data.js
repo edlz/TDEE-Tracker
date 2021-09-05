@@ -31,7 +31,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route   GET api/data/:date
+// @route   DELETE api/data/:date
 // @desc    get data for user with id
 // @access  Private
 
